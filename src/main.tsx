@@ -4,6 +4,6 @@
   import "./index.css";
   
   // Ruta Actualizada
-
+//DDd
   createRoot(document.getElementById("root")!).render(<App />);
   
