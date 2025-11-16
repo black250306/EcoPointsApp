@@ -1,4 +1,14 @@
+
 package com.ecoPoints.App;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.webkit.PermissionRequest;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+
+import androidx.core.app.ActivityCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
