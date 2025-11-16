@@ -50,6 +50,9 @@ dependencies {
     implementation "androidx.activity:activity:$androidxActivityVersion"
     implementation "androidx.fragment:fragment:$androidxFragmentVersion"
     implementation "androidx.webkit:webkit:$androidxWebkitVersion"
+
+    // Dependencia del plugin de la cámara añadida
+    implementation project(':capacitor-camera')
 }
 
 apply from: 'capacitor.build.gradle'
