@@ -61,7 +61,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     "Authorization": `Bearer ${token}`
   });
 
-  // Verificar compatibilidad
   useEffect(() => {
     const checkCompatibility = async () => {
       try {
@@ -73,8 +72,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
             toast.error("Tu dispositivo no soporta el escáner de QR");
             return;
           }
-
-          // Verificar permisos de cámara
+          
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
               video: { facingMode: "environment" } 
@@ -93,15 +91,23 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     checkCompatibility();
   }, []);
 
+  const setTransparentBackground = (isTransparent: boolean) => {
+    document.body.style.backgroundColor = isTransparent ? 'transparent' : '';
+    const root = document.getElementById('root');
+    if (root) {
+        root.style.backgroundColor = isTransparent ? 'transparent' : '';
+    }
+  };
+
   const scanWithHtml5Qr = async () => {
     try {
-      // Verificar permisos
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: "environment" } 
       });
       stream.getTracks().forEach(track => track.stop());
       setHasPermission(true);
 
+      setTransparentBackground(true);
       setIsScanning(true);
       
       if (scannerRef.current && isScannerRunning.current) {
@@ -114,13 +120,23 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const config = {
         fps: 10,
         qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0,
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
+      };
+      
+      const videoConstraints = {
+        facingMode: "environment",
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        advanced: [
+          { focusMode: "continuous" },
+          { whiteBalanceMode: "continuous" },
+          { exposureMode: "continuous" }
+        ]
       };
 
       try {
         await scanner.start(
-          { facingMode: "environment" },
+          videoConstraints as any, // TypeScript FIX 1
           config,
           (decodedText) => {
             handleScanSuccess(decodedText);
@@ -128,25 +144,18 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
           (errorMessage) => {}
         );
       } catch (error: any) {
-        console.error("Error with rear camera:", error);
-        
-        if (error.message?.includes('environment') || error.message?.includes('rear')) {
-          try {
-            toast.info("Intentando con cámara frontal...");
+        console.error("Error with rear camera, trying simpler constraints:", error);
+        try {
+            toast.info("Cámara avanzada falló, intentando modo simple...");
             await scanner.start(
-              { facingMode: "user" },
+              { facingMode: "environment" },
               config,
-              (decodedText) => {
-                handleScanSuccess(decodedText);
-              },
+              (decodedText) => { handleScanSuccess(decodedText); },
               (errorMessage) => {}
             );
-          } catch (frontError: any) {
-            console.error("Front camera also failed:", frontError);
-            throw frontError;
-          }
-        } else {
-          throw error;
+        } catch (fallbackError: any) {
+            console.error("Fallback camera also failed:", fallbackError);
+            throw fallbackError;
         }
       }
 
@@ -173,14 +182,12 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       console.error("Scanner initialization error:", err);
       setHasPermission(false);
       setIsScanning(false);
+      setTransparentBackground(false);
       
       if (scannerRef.current) {
         try {
           await scannerRef.current.stop();
-          await scannerRef.current.clear();
-        } catch (stopError) {
-          console.warn("Error stopping scanner:", stopError);
-        }
+        } catch (stopError) {}
       }
       scannerRef.current = null;
       isScannerRunning.current = false;
@@ -188,8 +195,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       
       if (err.name === 'NotAllowedError' || err.message?.includes('permission')) {
         toast.error("Permiso de cámara denegado. Por favor, permite el acceso a la cámara.");
-      } else if (err.name === 'NotFoundError') {
-        toast.error("No se encontró ninguna cámara disponible.");
       } else {
         toast.error("Error al iniciar la cámara: " + err.message);
       }
@@ -199,8 +204,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const checkZoomSupport = (track: MediaStreamTrack): boolean => {
     try {
       const capabilities = track.getCapabilities();
-      const hasZoom = (capabilities as any).zoom !== undefined;
-      return hasZoom;
+      return (capabilities as any).zoom !== undefined;
     } catch (error) {
       return false;
     }
@@ -212,25 +216,34 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const scale = level;
       videoElement.style.transform = `scale(${scale})`;
       videoElement.style.transformOrigin = 'center center';
-      videoElement.style.width = `${100 * scale}%`;
-      videoElement.style.height = `${100 * scale}%`;
     }
     setZoomLevel(level);
   };
-
+  
   const handleZoomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newZoom = parseFloat(event.target.value);
-    simulateDigitalZoom(newZoom);
+    setZoomLevel(newZoom);
+    if(supportsZoom && videoTrackRef.current) {
+      try {
+        const constraints = { advanced: [{ zoom: newZoom }] };
+        videoTrackRef.current.applyConstraints(constraints as any); // TypeScript FIX 2
+      } catch (error) {
+        console.warn("Optical zoom failed, falling back to digital", error);
+        simulateDigitalZoom(newZoom);
+      }
+    } else {
+      simulateDigitalZoom(newZoom);
+    }
   };
 
   const increaseZoom = () => {
     const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
-    simulateDigitalZoom(newZoom);
+    handleZoomChange({ target: { value: String(newZoom) } } as any);
   };
 
   const decreaseZoom = () => {
     const newZoom = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
-    simulateDigitalZoom(newZoom);
+    handleZoomChange({ target: { value: String(newZoom) } } as any);
   };
 
   const startScanning = async () => {
@@ -242,30 +255,23 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   };
 
   const stopScanning = async () => {
+    setTransparentBackground(false);
+    
     const videoElement = document.querySelector('#qr-reader video') as HTMLVideoElement;
     if (videoElement) {
       videoElement.style.transform = 'none';
-      videoElement.style.width = '100%';
-      videoElement.style.height = '100%';
-    }
-
-    if (videoTrackRef.current) {
-      videoTrackRef.current.stop();
-      videoTrackRef.current = null;
     }
 
     if (scannerRef.current && isScannerRunning.current) {
       try {
         await scannerRef.current.stop();
-        await scannerRef.current.clear();
         isScannerRunning.current = false;
+        videoTrackRef.current = null;
       } catch (error) {
         console.warn("Error stopping scanner:", error);
-        isScannerRunning.current = false;
       }
     }
     
-    scannerRef.current = null;
     setIsScanning(false);
     setSupportsZoom(false);
     setZoomLevel(1);
@@ -283,18 +289,10 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const response = await fetch(`${API_BASE}/validarQR`, {
         method: "POST",
         headers: getAuthHeaders(),
-        body: JSON.stringify({
-          codigo_qr: qrData
-        }),
+        body: JSON.stringify({ codigo_qr: qrData }),
       });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          toast.error("Sesión expirada. Inicia sesión nuevamente.");
-          return;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
 
@@ -302,33 +300,28 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       setEarnedPoints(puntosGanados);
       setShowSuccess(true);
       
-      try {
-        onScanSuccess?.({
-          type: 'scan',
-          points: puntosGanados,
-          description: data.mensaje || 'Escaneo QR',
-          location: data.ubicacion || undefined,
-        });
-      } catch (err) {
-        console.error('onScanSuccess handler threw:', err);
-      }
+      onScanSuccess?.({
+        type: 'scan',
+        points: puntosGanados,
+        description: data.mensaje || 'Escaneo QR',
+        location: data.ubicacion || undefined,
+      });
       
       toast.success(`¡${data.mensaje || "Escaneo exitoso"}! Ganaste ${puntosGanados} ecopoints 🎉`);
 
     } catch (error) {
       console.error("Error processing QR:", error);
-      setEarnedPoints(0);
       toast.error("Error al procesar el código QR. Intenta nuevamente.");
+    } finally {
+        setTimeout(() => setShowSuccess(false), 3000);
     }
-
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
   };
 
   useEffect(() => {
     return () => {
-      stopScanning();
+      if(isScannerRunning.current) {
+        stopScanning();
+      }
     };
   }, []);
 
@@ -370,9 +363,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
               <div className="text-center space-y-4">
                 <CameraIcon className="w-16 h-16 text-gray-400 mx-auto" />
                 <p className="text-gray-400">Toca el botón para iniciar el escaneo</p>
-                {hasPermission === false && (
-                  <p className="text-yellow-400 text-sm">Permisos de cámara requeridos</p>
-                )}
               </div>
             </div>
           )}
@@ -380,29 +370,21 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
           <div id="qr-reader" className={`w-full h-full ${isScanning ? '' : 'hidden'}`}></div>
 
           {isScanning && (
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-emerald-400 rounded-lg">
-                <motion.div
-                  className="absolute top-0 left-0 right-0 h-1 bg-emerald-400 rounded-full"
-                  animate={{ top: ['0%', '100%'] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                />
-              </div>
-              
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <div className="text-center space-y-3">
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <QrCode className="w-16 h-16 text-emerald-400 mx-auto" />
-                  </motion.div>
-                  <p className="text-white font-medium">Escaneando código QR...</p>
-                  {!supportsZoom && isScanning && (
-                    <p className="text-yellow-300 text-sm">Usando zoom digital</p>
-                  )}
+            <div className="absolute inset-0 pointer-events-none border-8 border-transparent" style={{ borderColor: 'rgba(0,0,0,0.4)'}}>
+                <div className="absolute top-1/2 left-1/2 w-[65vw] h-[65vw] max-w-[250px] max-h-[250px] transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative w-full h-full">
+                        <div className="absolute -top-1 -left-1 w-12 h-12 border-t-4 border-l-4 border-emerald-400 rounded-tl-lg"></div>
+                        <div className="absolute -top-1 -right-1 w-12 h-12 border-t-4 border-r-4 border-emerald-400 rounded-tr-lg"></div>
+                        <div className="absolute -bottom-1 -left-1 w-12 h-12 border-b-4 border-l-4 border-emerald-400 rounded-bl-lg"></div>
+                        <div className="absolute -bottom-1 -right-1 w-12 h-12 border-b-4 border-r-4 border-emerald-400 rounded-br-lg"></div>
+                        <motion.div
+                            className="absolute left-0 right-0 h-1 bg-emerald-400/80 rounded-full shadow-[0_0_15px_2px_#34d399]"
+                            style={{ top: '5%' }}
+                            animate={{ top: ['5%', '95%'] }}
+                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
+                        />
+                    </div>
                 </div>
-              </div>
             </div>
           )}
 
@@ -443,60 +425,35 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       </Card>
 
       {isScanning && (
-        <Card className="p-4 bg-blue-50 border-blue-200">
+        <Card className="p-4 bg-gray-800 border-gray-700">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-blue-700">
-                Control de Zoom {!supportsZoom && "(Digital)"}
+              <span className="text-sm font-medium text-gray-300">
+                Control de Zoom
               </span>
-              <span className="text-sm font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded">
+              <span className="text-sm font-bold text-white bg-gray-600 px-2 py-1 rounded">
                 {zoomLevel.toFixed(1)}x
               </span>
             </div>
             
             <div className="flex items-center space-x-3">
-              <Button
-                size="sm"
-                onClick={decreaseZoom}
-                disabled={zoomLevel <= MIN_ZOOM}
-                variant="outline"
-                className="flex-shrink-0 border-blue-300 text-blue-700 hover:bg-blue-100"
-              >
-                <Minus className="w-4 h-4" />
+              <Button size="icon" onClick={decreaseZoom} disabled={zoomLevel <= MIN_ZOOM} variant="outline" className="bg-gray-700 border-gray-600 text-white h-10 w-10">
+                <Minus className="w-5 h-5" />
               </Button>
               
-              <div className="flex-1">
-                <input
-                  type="range"
-                  min={MIN_ZOOM}
-                  max={MAX_ZOOM}
-                  step={0.1}
-                  value={zoomLevel}
-                  onChange={handleZoomChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer zoom-slider"
-                  style={{
-                    background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((zoomLevel - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM)) * 100}%, #e5e7eb ${((zoomLevel - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM)) * 100}%, #e5e7eb 100%)`
-                  }}
-                />
-              </div>
+              <input
+                type="range"
+                min={MIN_ZOOM}
+                max={MAX_ZOOM}
+                step={0.1}
+                value={zoomLevel}
+                onChange={handleZoomChange}
+                className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer zoom-slider"
+              />
               
-              <Button
-                size="sm"
-                onClick={increaseZoom}
-                disabled={zoomLevel >= MAX_ZOOM}
-                variant="outline"
-                className="flex-shrink-0 border-blue-300 text-blue-700 hover:bg-blue-100"
-              >
-                <Plus className="w-4 h-4" />
+              <Button size="icon" onClick={increaseZoom} disabled={zoomLevel >= MAX_ZOOM} variant="outline" className="bg-gray-700 border-gray-600 text-white h-10 w-10">
+                <Plus className="w-5 h-5" />
               </Button>
-            </div>
-
-            <div className="flex justify-between text-xs text-blue-600">
-              <span>{MIN_ZOOM}x</span>
-              <span className="font-medium">
-                {supportsZoom ? "Zoom óptico" : "Zoom digital"}
-              </span>
-              <span>{MAX_ZOOM}x</span>
             </div>
           </div>
         </Card>
@@ -527,25 +484,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
           </Button>
         )}
       </div>
-
-      <Card className="p-4 bg-emerald-50 border-emerald-200">
-        <div className="space-y-2">
-          <p className="text-emerald-900 font-semibold">
-            Consejos:
-          </p>
-          <ul className="text-emerald-700 space-y-1 ml-4">
-              <>
-                <li>• Usa la barra de zoom para acercar o alejar la imagen</li>
-                <li>• Mantén el QR dentro del cuadro verde</li>
-                <li>• Asegúrate de tener buena iluminación</li>
-                <li>• El zoom digital funciona en todos los dispositivos</li>
-              </>
-            {hasPermission === false && (
-              <li className="text-yellow-600 font-semibold"> • Recuerda aceptar el permiso para usar la cámara</li>
-            )}
-          </ul>
-        </div>
-      </Card>
     </div>
   );
 }
