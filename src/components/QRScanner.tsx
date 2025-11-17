@@ -31,6 +31,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [supportsZoom, setSupportsZoom] = useState(false);
   const [permissionError, setPermissionError] = useState(false);
+  const [cameraInfo, setCameraInfo] = useState<string>('');
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isScannerRunning = useRef(false);
   
@@ -56,6 +57,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const startScanning = async () => {
     if (showSuccess) return;
     setPermissionError(false);
+    setCameraInfo('');
 
     try {
       if (Capacitor.isNativePlatform()) {
@@ -70,9 +72,52 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const cameras = await Html5Qrcode.getCameras();
       if (!cameras || cameras.length === 0) throw new Error("No se encontraron cámaras.");
 
-      const rearCamera = cameras.find(c => c.label.toLowerCase().includes('back') || c.label.toLowerCase().includes('rear') || c.label.toLowerCase().includes('trasera'));
-      const cameraId = rearCamera ? rearCamera.id : cameras[0].id;
+      console.log("Todas las cámaras disponibles:", cameras);
+
+      // ESTRATEGIA MEJORADA para seleccionar cámara trasera
+      let selectedCamera = null;
       
+      // 1. Primero buscar cámara trasera explícita
+      selectedCamera = cameras.find(c => {
+        const label = c.label.toLowerCase();
+        return label.includes('back') || 
+               label.includes('rear') || 
+               label.includes('trasera') ||
+               label.includes('environment') ||
+               label.includes('world') ||
+               label.includes('exterior') ||
+               label.includes('0'); // Muchos dispositivos usan "0" para cámara trasera
+      });
+
+      // 2. Si no encontramos trasera, buscar cualquier cámara que NO sea frontal
+      if (!selectedCamera) {
+        selectedCamera = cameras.find(c => {
+          const label = c.label.toLowerCase();
+          return !label.includes('front') && 
+                 !label.includes('user') && 
+                 !label.includes('face') &&
+                 !label.includes('selfie') &&
+                 !label.includes('delantera') &&
+                 !label.includes('1'); // Muchos dispositivos usan "1" para cámara frontal
+        });
+      }
+
+      // 3. Si aún no encontramos, usar la última cámara (generalmente es la trasera)
+      if (!selectedCamera) {
+        selectedCamera = cameras[cameras.length - 1];
+      }
+
+      // 4. Como último recurso, usar la primera cámara
+      if (!selectedCamera) {
+        selectedCamera = cameras[0];
+      }
+
+      const cameraId = selectedCamera.id;
+      const cameraLabel = selectedCamera.label;
+      
+      setCameraInfo(`Usando: ${cameraLabel}`);
+      console.log("Cámara seleccionada:", cameraLabel);
+
       setTransparentBackground(true);
       setIsScanning(true);
 
@@ -202,6 +247,13 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Escanear QR</h1>
         <p className="text-gray-500">Escanea el código QR del punto de reciclaje para ganar ecopoints</p>
+        
+        {cameraInfo && (
+          <div className="mt-2 p-2 bg-blue-100 border border-blue-300 rounded-lg">
+            <p className="text-blue-700 text-xs">{cameraInfo}</p>
+          </div>
+        )}
+        
         {permissionError && (
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
             <p className="text-yellow-700 text-sm">Permiso de cámara denegado. Habilítalo en los ajustes de la app y reiníciala.</p>
@@ -213,7 +265,10 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
          <div className="relative aspect-square bg-gray-900">
           {!isScanning && !showSuccess && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center space-y-4"><CameraIcon className="w-16 h-16 text-gray-400 mx-auto" /><p className="text-gray-400">Toca el botón para iniciar</p></div>
+              <div className="text-center space-y-4">
+                <CameraIcon className="w-16 h-16 text-gray-400 mx-auto" />
+                <p className="text-gray-400">Toca el botón para iniciar</p>
+              </div>
             </div>
           )}
           <div id="qr-reader" className={`w-full h-full ${isScanning ? '' : 'hidden'}`}></div>
