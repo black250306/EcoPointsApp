@@ -79,26 +79,26 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         return { width: qrboxSize, height: qrboxSize };
       };
 
-      const config: any = {
+      // --- DEFINITIVE FIX V2: Create a single, unambiguous video constraints object ---
+      const videoConstraints: any = {
+        facingMode: { exact: "environment" }
+      };
+
+      if (Capacitor.isNativePlatform()) {
+        videoConstraints.width = { ideal: 1280 };
+        videoConstraints.height = { ideal: 720 };
+        videoConstraints.advanced = [{ focusMode: 'continuous' }, { zoom: MIN_ZOOM }];
+      }
+
+      const config = {
         fps: 10,
         qrbox: qrboxFunction,
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
       };
 
-      // For native apps, we add advanced constraints for better quality and zoom.
-      if (Capacitor.isNativePlatform()) {
-        config.videoConstraints = {
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            advanced: [{ focusMode: 'continuous' }, { zoom: MIN_ZOOM }]
-        };
-      }
-
-      // --- SIMPLIFIED FIX: Directly request the rear camera ---
-      // The first argument requests the camera. `{ facingMode: "environment" }` is the standard way to ask for the rear camera.
-      // This avoids guessing based on camera labels.
+      // Start the scanner by passing the constraints as the FIRST argument.
       await scanner.start(
-        { facingMode: "environment" },
+        videoConstraints,
         config,
         (decodedText) => { handleScanSuccess(decodedText); },
         (errorMessage) => { /* ignore */ }
@@ -116,13 +116,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
       } else {
-        // Try to get camera list to provide more debug info
-        Html5Qrcode.getCameras().then(cameras => {
-            console.error("Available cameras on error:", cameras);
-            toast.error(`Error al iniciar cámara. Cámaras encontradas: ${cameras.length}. Revisa la consola.`);
-        }).catch(() => {
-            toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
-        });
+        toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
       }
     }
   };
