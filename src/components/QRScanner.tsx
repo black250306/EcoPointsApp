@@ -42,10 +42,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const setTransparentBackground = (isTransparent: boolean) => {
     if (Capacitor.isNativePlatform()) {
         document.body.style.backgroundColor = isTransparent ? 'transparent' : '';
-        const root = document.getElementById('root');
-        if (root) {
-            root.style.backgroundColor = isTransparent ? 'transparent' : '';
-        }
+        document.getElementById('root')!.style.backgroundColor = isTransparent ? 'transparent' : '';
     }
   };
 
@@ -56,41 +53,46 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       setTransparentBackground(true);
       setIsScanning(true);
       
-      const scanner = new Html5Qrcode("qr-reader");
+      const scanner = new Html5Qrcode("qr-reader", { verbose: false });
       scannerRef.current = scanner;
 
+      // STEP 1: Get camera permissions and a list of cameras.
+      // This is the most robust way and should trigger the native permission prompt.
+      const cameras = await Html5Qrcode.getCameras();
+      if (!cameras || cameras.length === 0) {
+        throw new Error("No se encontraron cámaras.");
+      }
+
+      // STEP 2: Find the rear camera.
+      let cameraId;
+      if (cameras.length === 1) {
+        cameraId = cameras[0].id;
+      } else {
+        const rearCamera = cameras.find(camera => 
+            camera.label.toLowerCase().includes('back') || 
+            camera.label.toLowerCase().includes('rear') || 
+            camera.label.toLowerCase().includes('trasera')
+        );
+        cameraId = rearCamera ? rearCamera.id : cameras[0].id; // Fallback to the first camera
+      }
+      
       const config = {
         fps: 10,
         qrbox: { width: 250, height: 250 },
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
-        rememberLastUsedCamera: true,
       };
 
-      // --- PLATFORM-SPECIFIC FIX ---
-      // Use the correct constraints for each environment.
-      let videoConstraints;
-      if (Capacitor.isNativePlatform()) {
-        // NATIVE APP (Android/iOS): Request high quality and advanced features.
-        // This relies on MainActivity.java to handle permissions.
-        videoConstraints = {
-            facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            advanced: [{ focusMode: "continuous" }]
-        };
-      } else {
-        // WEB BROWSER: Use simple constraints to avoid the "4 keys" error.
-        videoConstraints = { facingMode: "environment" };
-      }
-
+      // STEP 3: Start the scanner with the specific camera ID.
+      // This avoids ambiguity and complex constraint objects that were failing.
       await scanner.start(
-        videoConstraints as any, // Use 'as any' to satisfy TypeScript for both cases
+        cameraId, // Pass the exact camera ID as a string
         config,
         (decodedText) => { handleScanSuccess(decodedText); },
         (errorMessage) => { /* ignore */ }
       );
 
       isScannerRunning.current = true;
+      // Zoom setup is attempted after start, but only on native
       setTimeout(() => setupZoom(scanner), 500);
 
     } catch (err: any) {
@@ -101,16 +103,14 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       if (err.name === 'NotAllowedError' || err.message?.includes('permission')) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
-      } else if (err.message?.includes('key')) {
-          toast.error("Error de configuración de cámara en la web.");
       } else {
-        toast.error("No se pudo iniciar la cámara. Intenta de nuevo.");
+        toast.error(`Error al iniciar cámara: ${err.name || 'desconocido'}`)
       }
     }
   };
 
   const setupZoom = (scanner: Html5Qrcode) => {
-    if (!Capacitor.isNativePlatform()) return; // Zoom is only attempted on native
+    if (!Capacitor.isNativePlatform()) return; // Zoom is only for native
     try {
       const capabilities = scanner.getRunningTrackCapabilities() as any;
       if (capabilities.zoom) {
@@ -119,7 +119,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         setSupportsZoom(true);
       }
     } catch (error) {
-      console.warn("Zoom setup failed:", error);
+      console.warn("Zoom control not available:", error);
       setSupportsZoom(false);
     }
   };
@@ -215,13 +215,13 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     <div className="p-6 space-y-6">
       <style>{sliderStyles}</style>
 
+      {/* UI is unchanged */}
       <div className="text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
           <QrCode className="w-8 h-8 text-emerald-600" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Escanear QR</h1>
         <p className="text-gray-500">Escanea el código QR del punto de reciclaje para ganar ecopoints</p>
-        
         {permissionError && (
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
             <p className="text-yellow-700 text-sm">Permiso de cámara denegado. Por favor, permite el acceso a la cámara en los ajustes de tu dispositivo y reinicia la app.</p>
@@ -239,9 +239,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
               </div>
             </div>
           )}
-
           <div id="qr-reader" className={`w-full h-full ${isScanning ? '' : 'hidden'}`}></div>
-
           {isScanning && (
              <div className="absolute inset-0 pointer-events-none border-8 border-transparent" style={{ borderColor: 'rgba(0,0,0,0.4)'}}>
                 <div className="absolute top-1/2 left-1/2 w-[65vw] h-[65vw] max-w-[250px] max-h-[250px] transform -translate-x-1/2 -translate-y-1/2">
@@ -260,7 +258,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
                 </div>
             </div>
           )}
-
           <AnimatePresence>
             {showSuccess && (
               <motion.div
@@ -286,7 +283,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         </div>
       </Card>
 
-      {isScanning && (
+      {isScanning && Capacitor.isNativePlatform() && (
         <Card className="p-4 bg-gray-800 border-gray-700">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
