@@ -179,7 +179,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
                label.includes('environment') ||
                label.includes('facing back') ||
                label.includes('0');
-      }) || cameras[0];
+      }) || cameras[2];
 
       const cameraId = selectedCamera.id;
       const cameraLabel = selectedCamera.label;
