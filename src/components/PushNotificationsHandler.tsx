@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Capacitor } from '@capacitor/core';
 import {
     PushNotifications,
     Token,
@@ -10,74 +11,73 @@ const PushNotificationsHandler = () => {
 
     useEffect(() => {
         const registerAndListen = async () => {
-            // Comprueba si el plugin está disponible
-            const isPushNotificationsAvailable = true; // Capacitor.isPluginAvailable('PushNotifications');
-
-            if (!isPushNotificationsAvailable) {
-                console.log('Push notifications not available');
+            // --- FIX: Only run on native platforms ---
+            if (!Capacitor.isNativePlatform()) {
+                console.log("Push Notifications not available on web.");
                 return;
             }
 
             // 1. Pide permiso al usuario para recibir notificaciones
-            let permStatus = await PushNotifications.checkPermissions();
+            try {
+                let permStatus = await PushNotifications.checkPermissions();
 
-            if (permStatus.receive === 'prompt') {
-                permStatus = await PushNotifications.requestPermissions();
-            }
-
-            if (permStatus.receive !== 'granted') {
-                alert('El permiso para notificaciones no fue concedido.');
-                return;
-            }
-
-            // 2. Si el permiso es concedido, registra el dispositivo
-            await PushNotifications.register();
-
-            // --- LISTOS PARA RECIBIR NOTIFICACIONES ---
-
-            // Se dispara al registrarse exitosamente.
-            // Aquí es donde obtienes el "token" del dispositivo.
-            PushNotifications.addListener('registration', (token: Token) => {
-                console.info('Dispositivo registrado para notificaciones. TOKEN:', token.value);
-                // **IMPORTANTE:** En una aplicación real, enviarías este `token.value`
-                // a tu servidor (backend) para que sepa a qué dispositivo enviar las notificaciones.
-            });
-
-            // Se dispara si hay un error en el registro.
-            PushNotifications.addListener('registrationError', (err: any) => {
-                console.error('Error en el registro de notificaciones:', err);
-            });
-
-            // Se dispara cuando se recibe una notificación y la app está en PRIMER PLANO.
-            PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
-                console.log('Notificación recibida en primer plano:', notification);
-                // Aquí podrías mostrar una alerta o un "toast" dentro de la app.
-                alert(`Nuevo Convenio: ${notification.title}\n${notification.body}`);
-            });
-
-            // Se dispara cuando el usuario TOCA una notificación (abriendo la app).
-            PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-                console.log('Acción de notificación realizada:', notification);
-                // Aquí puedes redirigir al usuario a una pantalla específica.
-                // Por ejemplo, a la pantalla de "Convenios".
-                const data = notification.notification.data;
-                if (data.detailsId) {
-                    // window.location.href = `/convenios/${data.detailsId}`
-                    console.log(`Redirigir a la página del convenio: ${data.detailsId}`);
+                if (permStatus.receive === 'prompt') {
+                    permStatus = await PushNotifications.requestPermissions();
                 }
-            });
+
+                if (permStatus.receive !== 'granted') {
+                    // It's better not to alert here, as it can be intrusive.
+                    // Console logging is a safer alternative.
+                    console.warn('Push notification permission was not granted.');
+                    return;
+                }
+
+                // 2. Si el permiso es concedido, registra el dispositivo
+                await PushNotifications.register();
+
+                // --- LISTOS PARA RECIBIR NOTIFICACIONES ---
+
+                PushNotifications.addListener('registration', (token: Token) => {
+                    console.info('Device registered for notifications. TOKEN:', token.value);
+                    // Here you would send this token to your backend server.
+                });
+
+                PushNotifications.addListener('registrationError', (err: any) => {
+                    console.error('Error in notification registration:', err);
+                });
+
+                PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
+                    console.log('Push notification received in foreground:', notification);
+                    // Optionally, display a toast or an in-app message.
+                    // alert(`Nuevo Convenio: ${notification.title}\n${notification.body}`);
+                });
+
+                PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+                    console.log('Notification action performed:', notification);
+                    // Here you can redirect the user to a specific screen.
+                    const data = notification.notification.data;
+                    if (data.detailsId) {
+                        console.log(`Redirecting to details page: ${data.detailsId}`);
+                        // Example: window.location.href = `/convenios/${data.detailsId}`
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to register for push notifications", error);
+            }
         }
 
         registerAndListen();
 
-        // Función de limpieza para remover los listeners cuando el componente se desmonte
+        // Cleanup function to remove listeners
         return () => {
-            PushNotifications.removeAllListeners();
+            if (Capacitor.isNativePlatform()) {
+                PushNotifications.removeAllListeners();
+            }
         };
 
     }, []);
 
-    return null; // Este componente no renderiza ninguna UI.
+    return null; // This component does not render any UI.
 };
 
 export default PushNotificationsHandler;

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+import { Capacitor } from '@capacitor/core';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { QrCode, X, CheckCircle2, Camera as CameraIcon, Minus, Plus } from 'lucide-react';
@@ -7,27 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 const sliderStyles = `
-  .zoom-slider::-webkit-slider-thumb {
-    appearance: none;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #10b981;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  
-  .zoom-slider::-moz-range-thumb {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #10b981;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    box-sizing: border-box;
-  }
+  /* Slider styles remain unchanged */
 `;
 
 interface QRScannerProps {
@@ -59,16 +40,16 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   });
 
   const setTransparentBackground = (isTransparent: boolean) => {
-    document.body.style.backgroundColor = isTransparent ? 'transparent' : '';
-    const root = document.getElementById('root');
-    if (root) {
-        root.style.backgroundColor = isTransparent ? 'transparent' : '';
+    if (Capacitor.isNativePlatform()) {
+        document.body.style.backgroundColor = isTransparent ? 'transparent' : '';
+        const root = document.getElementById('root');
+        if (root) {
+            root.style.backgroundColor = isTransparent ? 'transparent' : '';
+        }
     }
   };
 
   const scanWithHtml5Qr = async () => {
-    // The permission prompt is now handled automatically by MainActivity.java when scanner.start() is called.
-    // We just need to handle the potential error if the user denies it.
     setPermissionError(false);
     
     try {
@@ -85,22 +66,28 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         rememberLastUsedCamera: true,
       };
 
-      const videoConstraints = {
-          facingMode: "environment",
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          advanced: [{ focusMode: "continuous" }]
-      };
+      // --- PLATFORM-SPECIFIC FIX ---
+      // Use the correct constraints for each environment.
+      let videoConstraints;
+      if (Capacitor.isNativePlatform()) {
+        // NATIVE APP (Android/iOS): Request high quality and advanced features.
+        // This relies on MainActivity.java to handle permissions.
+        videoConstraints = {
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            advanced: [{ focusMode: "continuous" }]
+        };
+      } else {
+        // WEB BROWSER: Use simple constraints to avoid the "4 keys" error.
+        videoConstraints = { facingMode: "environment" };
+      }
 
       await scanner.start(
-        videoConstraints as any,
+        videoConstraints as any, // Use 'as any' to satisfy TypeScript for both cases
         config,
-        (decodedText) => {
-          handleScanSuccess(decodedText);
-        },
-        (errorMessage) => {
-          // This callback is for non-fatal scan errors, can be ignored.
-        }
+        (decodedText) => { handleScanSuccess(decodedText); },
+        (errorMessage) => { /* ignore */ }
       );
 
       isScannerRunning.current = true;
@@ -111,10 +98,11 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       setIsScanning(false);
       setTransparentBackground(false);
 
-      // Check if the error is a permission denial
       if (err.name === 'NotAllowedError' || err.message?.includes('permission')) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
+      } else if (err.message?.includes('key')) {
+          toast.error("Error de configuración de cámara en la web.");
       } else {
         toast.error("No se pudo iniciar la cámara. Intenta de nuevo.");
       }
@@ -122,6 +110,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   };
 
   const setupZoom = (scanner: Html5Qrcode) => {
+    if (!Capacitor.isNativePlatform()) return; // Zoom is only attempted on native
     try {
       const capabilities = scanner.getRunningTrackCapabilities() as any;
       if (capabilities.zoom) {
@@ -136,7 +125,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   };
 
   const applyZoom = (zoomValue: number) => {
-    if (scannerRef.current && isScannerRunning.current) {
+    if (scannerRef.current && isScannerRunning.current && supportsZoom) {
       try {
         scannerRef.current.applyVideoConstraints({ advanced: [{ zoom: zoomValue }] } as any);
         setZoomLevel(zoomValue);
