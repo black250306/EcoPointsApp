@@ -31,7 +31,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [supportsZoom, setSupportsZoom] = useState(false);
   const [permissionError, setPermissionError] = useState(false);
-  const [cameraInfo, setCameraInfo] = useState<string>('');
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isScannerRunning = useRef(false);
   
@@ -57,7 +56,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const startScanning = async () => {
     if (showSuccess) return;
     setPermissionError(false);
-    setCameraInfo('');
 
     try {
       if (Capacitor.isNativePlatform()) {
@@ -69,55 +67,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         }
       }
 
-      const cameras = await Html5Qrcode.getCameras();
-      if (!cameras || cameras.length === 0) throw new Error("No se encontraron cámaras.");
-
-      console.log("Todas las cámaras disponibles:", cameras);
-
-      // ESTRATEGIA MEJORADA para seleccionar cámara trasera
-      let selectedCamera = null;
-      
-      // 1. Primero buscar cámara trasera explícita
-      selectedCamera = cameras.find(c => {
-        const label = c.label.toLowerCase();
-        return label.includes('back') || 
-               label.includes('rear') || 
-               label.includes('trasera') ||
-               label.includes('environment') ||
-               label.includes('world') ||
-               label.includes('exterior') ||
-               label.includes('0'); // Muchos dispositivos usan "0" para cámara trasera
-      });
-
-      // 2. Si no encontramos trasera, buscar cualquier cámara que NO sea frontal
-      if (!selectedCamera) {
-        selectedCamera = cameras.find(c => {
-          const label = c.label.toLowerCase();
-          return !label.includes('front') && 
-                 !label.includes('user') && 
-                 !label.includes('face') &&
-                 !label.includes('selfie') &&
-                 !label.includes('delantera') &&
-                 !label.includes('1'); // Muchos dispositivos usan "1" para cámara frontal
-        });
-      }
-
-      // 3. Si aún no encontramos, usar la última cámara (generalmente es la trasera)
-      if (!selectedCamera) {
-        selectedCamera = cameras[cameras.length - 1];
-      }
-
-      // 4. Como último recurso, usar la primera cámara
-      if (!selectedCamera) {
-        selectedCamera = cameras[0];
-      }
-
-      const cameraId = selectedCamera.id;
-      const cameraLabel = selectedCamera.label;
-      
-      setCameraInfo(`Usando: ${cameraLabel}`);
-      console.log("Cámara seleccionada:", cameraLabel);
-
       setTransparentBackground(true);
       setIsScanning(true);
 
@@ -127,10 +76,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const qrboxFunction = (viewfinderWidth: number, viewfinderHeight: number): { width: number; height: number; } => {
         const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
         const qrboxSize = Math.floor(minEdge * 0.7);
-        return {
-            width: qrboxSize,
-            height: qrboxSize,
-        };
+        return { width: qrboxSize, height: qrboxSize };
       };
 
       const config: any = {
@@ -139,6 +85,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
       };
 
+      // For native apps, we add advanced constraints for better quality and zoom.
       if (Capacitor.isNativePlatform()) {
         config.videoConstraints = {
             width: { ideal: 1280 },
@@ -147,12 +94,16 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         };
       }
 
+      // --- SIMPLIFIED FIX: Directly request the rear camera ---
+      // The first argument requests the camera. `{ facingMode: "environment" }` is the standard way to ask for the rear camera.
+      // This avoids guessing based on camera labels.
       await scanner.start(
-        cameraId,
+        { facingMode: "environment" },
         config,
         (decodedText) => { handleScanSuccess(decodedText); },
         (errorMessage) => { /* ignore */ }
       );
+      // --- END OF FIX ---
 
       isScannerRunning.current = true;
       setTimeout(() => setupZoom(scanner), 500);
@@ -165,7 +116,13 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
       } else {
-        toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
+        // Try to get camera list to provide more debug info
+        Html5Qrcode.getCameras().then(cameras => {
+            console.error("Available cameras on error:", cameras);
+            toast.error(`Error al iniciar cámara. Cámaras encontradas: ${cameras.length}. Revisa la consola.`);
+        }).catch(() => {
+            toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
+        });
       }
     }
   };
@@ -247,12 +204,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Escanear QR</h1>
         <p className="text-gray-500">Escanea el código QR del punto de reciclaje para ganar ecopoints</p>
-        
-        {cameraInfo && (
-          <div className="mt-2 p-2 bg-blue-100 border border-blue-300 rounded-lg">
-            <p className="text-blue-700 text-xs">{cameraInfo}</p>
-          </div>
-        )}
         
         {permissionError && (
           <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
