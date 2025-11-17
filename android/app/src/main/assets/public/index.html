@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    <!-- Theme colors para StatusBar -->
+    <meta name="theme-color" content="#c6d4cc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121f2f" media="(prefers-color-scheme: dark)">
+    
+    <!-- Para Safari iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EcoPoints">
+    
+    <!-- Para Android Chrome -->
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Prevenir zoom en inputs -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <title>EcoPoints</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    
+    <!-- Estilos iniciales para prevenir flash de contenido -->
+    <style>
+      /* Prevenir flash de contenido sin estilo */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      }
+      
+      /* Para modo oscuro por defecto si el sistema lo prefiere */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #111827;
+        }
+      }
+      
+      /* Ocultar root hasta que React cargue */
+      #root:empty {
+        display: none;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-SSdIqLdk.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-wIXRpfU0.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
