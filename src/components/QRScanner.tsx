@@ -101,9 +101,12 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
 
   const scanWithHtml5Qr = async () => {
     try {
+      // First, ensure we have camera permission. This will prompt the user if needed.
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: "environment" } 
       });
+      // Stop the stream immediately, we just used it to get permission.
+      // html5-qrcode will start its own stream.
       stream.getTracks().forEach(track => track.stop());
       setHasPermission(true);
 
@@ -114,51 +117,32 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         await stopScanning();
       }
 
+      // Initialize the scanner
       const scanner = new Html5Qrcode("qr-reader");
       scannerRef.current = scanner;
 
+      // Configuration for the scanner
       const config = {
         fps: 10,
         qrbox: { width: 250, height: 250 },
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
       };
       
-      const videoConstraints = {
-        facingMode: "environment",
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        advanced: [
-          { focusMode: "continuous" },
-          { whiteBalanceMode: "continuous" },
-          { exposureMode: "continuous" }
-        ]
-      };
-
-      try {
-        await scanner.start(
-          videoConstraints as any, // TypeScript FIX 1
-          config,
-          (decodedText) => {
-            handleScanSuccess(decodedText);
-          },
-          (errorMessage) => {}
-        );
-      } catch (error: any) {
-        console.error("Error with rear camera, trying simpler constraints:", error);
-        try {
-            toast.info("Cámara avanzada falló, intentando modo simple...");
-            await scanner.start(
-              { facingMode: "environment" },
-              config,
-              (decodedText) => { handleScanSuccess(decodedText); },
-              (errorMessage) => {}
-            );
-        } catch (fallbackError: any) {
-            console.error("Fallback camera also failed:", fallbackError);
-            throw fallbackError;
+      // *** THIS IS THE FIX ***
+      // We directly call scanner.start with a simple, valid constraints object.
+      // The complex object with multiple keys was causing the error.
+      await scanner.start(
+        { facingMode: "environment" }, // Request the rear camera
+        config,
+        (decodedText) => {
+          handleScanSuccess(decodedText);
+        },
+        (errorMessage) => {
+          // This callback is for non-fatal scan errors, can be ignored.
         }
-      }
+      );
 
+      // After a short delay, try to get the video track to enable zoom
       setTimeout(async () => {
         try {
           const videoElement = document.querySelector('#qr-reader video') as HTMLVideoElement;
@@ -186,8 +170,12 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       
       if (scannerRef.current) {
         try {
-          await scannerRef.current.stop();
-        } catch (stopError) {}
+          if (isScannerRunning.current) {
+            await scannerRef.current.stop();
+          }
+        } catch (stopError) {
+          console.warn("Error stopping scanner in catch block:", stopError);
+        }
       }
       scannerRef.current = null;
       isScannerRunning.current = false;
@@ -226,7 +214,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     if(supportsZoom && videoTrackRef.current) {
       try {
         const constraints = { advanced: [{ zoom: newZoom }] };
-        videoTrackRef.current.applyConstraints(constraints as any); // TypeScript FIX 2
+        videoTrackRef.current.applyConstraints(constraints as any);
       } catch (error) {
         console.warn("Optical zoom failed, falling back to digital", error);
         simulateDigitalZoom(newZoom);
