@@ -173,12 +173,12 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       // MANTENIENDO TU LÓGICA ORIGINAL para cámara trasera
       let selectedCamera = cameras.find(c => {
         const label = c.label.toLowerCase();
-
         return
         label.includes('facing back') ||
           label.includes('back') ||
           label.includes('rear') ||
           label.includes('trasera') ||
+
           label.includes('0');
       }) || cameras[0];
 
