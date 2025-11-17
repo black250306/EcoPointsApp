@@ -8,7 +8,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 const sliderStyles = `
-  /* Slider styles remain unchanged */
+  .zoom-slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .zoom-slider::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    border: 2px solid white;
+    box-sizing: border-box;
+  }
 `;
 
 interface QRScannerProps {
@@ -50,12 +69,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     setPermissionError(false);
     
     try {
-      setTransparentBackground(true);
-      setIsScanning(true);
-      
-      const scanner = new Html5Qrcode("qr-reader", { verbose: false });
-      scannerRef.current = scanner;
-
       // STEP 1: Get camera permissions and a list of cameras.
       // This is the most robust way and should trigger the native permission prompt.
       const cameras = await Html5Qrcode.getCameras();
@@ -75,6 +88,12 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         );
         cameraId = rearCamera ? rearCamera.id : cameras[0].id; // Fallback to the first camera
       }
+      
+      setTransparentBackground(true);
+      setIsScanning(true);
+
+      const scanner = new Html5Qrcode("qr-reader", { verbose: false });
+      scannerRef.current = scanner;
       
       const config = {
         fps: 10,
@@ -104,7 +123,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
       } else {
-        toast.error(`Error al iniciar cámara: ${err.name || 'desconocido'}`)
+        toast.error(`Error al iniciar cámara: ${err.message || 'Error desconocido'}`)
       }
     }
   };
@@ -127,6 +146,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const applyZoom = (zoomValue: number) => {
     if (scannerRef.current && isScannerRunning.current && supportsZoom) {
       try {
+        // The `applyVideoConstraints` method is the correct way to control zoom dynamically.
         scannerRef.current.applyVideoConstraints({ advanced: [{ zoom: zoomValue }] } as any);
         setZoomLevel(zoomValue);
       } catch (error) {
@@ -162,7 +182,8 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         await scannerRef.current.stop();
         isScannerRunning.current = false;
       } catch (error) {
-        console.warn("Error stopping scanner:", error);
+        // This can sometimes fail if the scanner is already stopped. It's safe to ignore.
+        console.warn("Scanner could not be stopped, it might have been already stopped.", error);
       }
     }
     setIsScanning(false);
@@ -215,7 +236,6 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     <div className="p-6 space-y-6">
       <style>{sliderStyles}</style>
 
-      {/* UI is unchanged */}
       <div className="text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
           <QrCode className="w-8 h-8 text-emerald-600" />
