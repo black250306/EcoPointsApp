@@ -79,21 +79,31 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const scanner = new Html5Qrcode("qr-reader", { verbose: false });
       scannerRef.current = scanner;
       
-      const config = {
+      const qrboxFunction = (viewfinderWidth: number, viewfinderHeight: number): { width: number; height: number; } => {
+        const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+        const qrboxSize = Math.floor(minEdge * 0.7);
+        return {
+            width: qrboxSize,
+            height: qrboxSize,
+        };
+      };
+
+      const config: any = {
         fps: 10,
-        qrbox: { width: 250, height: 250 },
+        qrbox: qrboxFunction,
         supportedFormats: [Html5QrcodeSupportedFormats.QR_CODE],
       };
 
-      const videoConstraints = {
-          deviceId: { exact: cameraId },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          advanced: Capacitor.isNativePlatform() ? [{ focusMode: 'continuous' }, { zoom: MIN_ZOOM }] : []
-      };
+      if (Capacitor.isNativePlatform()) {
+        config.videoConstraints = {
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            advanced: [{ focusMode: 'continuous' }, { zoom: MIN_ZOOM }]
+        };
+      }
 
       await scanner.start(
-        videoConstraints as any,
+        cameraId,
         config,
         (decodedText) => { handleScanSuccess(decodedText); },
         (errorMessage) => { /* ignore */ }
@@ -110,7 +120,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
         setPermissionError(true);
       } else {
-        toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`)
+        toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
       }
     }
   };
@@ -118,7 +128,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const setupZoom = (scanner: Html5Qrcode) => {
     try {
       const capabilities = scanner.getRunningTrackCapabilities() as any;
-      if (capabilities.zoom) {
+      if (capabilities?.zoom) {
         const settings = scanner.getRunningTrackSettings() as any;
         setZoomLevel(settings.zoom ?? MIN_ZOOM);
         setSupportsZoom(true);
@@ -209,13 +219,15 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
           <div id="qr-reader" className={`w-full h-full ${isScanning ? '' : 'hidden'}`}></div>
           {isScanning && (
              <div className="absolute inset-0 pointer-events-none border-8 border-transparent" style={{ borderColor: 'rgba(0,0,0,0.4)'}}>
-                <div className="absolute top-1/2 left-1/2 w-[65vw] h-[65vw] max-w-[250px] max-h-[250px] transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="relative w-full h-full">
-                        <div className="absolute -top-1 -left-1 w-12 h-12 border-t-4 border-l-4 border-emerald-400 rounded-tl-lg"></div>
-                        <div className="absolute -top-1 -right-1 w-12 h-12 border-t-4 border-r-4 border-emerald-400 rounded-tr-lg"></div>
-                        <div className="absolute -bottom-1 -left-1 w-12 h-12 border-b-4 border-l-4 border-emerald-400 rounded-bl-lg"></div>
-                        <div className="absolute -bottom-1 -right-1 w-12 h-12 border-b-4 border-r-4 border-emerald-400 rounded-br-lg"></div>
-                        <motion.div className="absolute left-0 right-0 h-1 bg-emerald-400/80 rounded-full shadow-[0_0_15px_2px_#34d399]" style={{ top: '5%' }} animate={{ top: ['5%', '95%'] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }} />
+                <div className="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative w-full h-full flex items-center justify-center">
+                        <div className='w-[70vw] h-[70vw] max-w-[280px] max-h-[280px] relative'>
+                          <div className="absolute -top-1 -left-1 w-12 h-12 border-t-4 border-l-4 border-emerald-400 rounded-tl-lg"></div>
+                          <div className="absolute -top-1 -right-1 w-12 h-12 border-t-4 border-r-4 border-emerald-400 rounded-tr-lg"></div>
+                          <div className="absolute -bottom-1 -left-1 w-12 h-12 border-b-4 border-l-4 border-emerald-400 rounded-bl-lg"></div>
+                          <div className="absolute -bottom-1 -right-1 w-12 h-12 border-b-4 border-r-4 border-emerald-400 rounded-br-lg"></div>
+                          <motion.div className="absolute left-0 right-0 h-1 bg-emerald-400/80 rounded-full shadow-[0_0_15px_2px_#34d399]" style={{ top: '5%' }} animate={{ top: ['5%', '95%'] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }} />
+                        </div>
                     </div>
                 </div>
             </div>
