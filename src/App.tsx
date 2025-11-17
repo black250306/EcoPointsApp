@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { SplashScreen } from '@capacitor/splash-screen';
+
 import { StatusBar, Style } from '@capacitor/status-bar';
-import { Home } from './components/Home';
-import { QRScanner } from './components/QRScanner';
-import { History } from './components/History';
-import { Profile } from './components/Profile';
-import { Rewards, Reward } from './components/Rewards';
-import { BottomNav } from './components/BottomNav';
+import { Home } from './components/Usuario/Home';
+import { QRScanner } from './components/Usuario/QRScanner';
+import { History } from './components/Usuario/History';
+import { Profile } from './components/Usuario/Profile';
+import { Rewards, Reward } from './components/Usuario/Rewards';
+import { BottomNav } from './components/Usuario/BottomNav';
 import { Toaster } from './components/ui/sonner';
 import Login from './components/Login';
 import PushNotificationsHandler from './components/PushNotificationsHandler';
@@ -27,7 +27,7 @@ export default function App() {
         if (theme === 'light') {
           // Modo claro: texto oscuro sobre fondo claro
           await StatusBar.setStyle({ style: Style.Dark });
-          await StatusBar.setBackgroundColor({ color: '#c6d4cc' });
+          await StatusBar.setBackgroundColor({ color: '#a4a4a4ff' });
         } else {
           // Modo oscuro: texto claro sobre fondo oscuro  
           await StatusBar.setStyle({ style: Style.Light });
