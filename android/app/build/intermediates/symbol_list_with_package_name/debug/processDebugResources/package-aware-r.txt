@@ -3158,6 +3158,9 @@ id blocking
 id bottom
 id bounce
 id buttonPanel
+id camera_container
+id camera_loader
+id camera_loader_spinner
 id cancel_button
 id center
 id centerCrop
@@ -3245,6 +3248,9 @@ id flip
 id floating
 id forever
 id fragment_container_view_tag
+id frame_camera_cont
+id frame_container
+id frame_view
 id fullscreen_header
 id ghost_view
 id ghost_view_holder
@@ -3387,6 +3393,7 @@ id path
 id pathRelative
 id peekHeight
 id percent
+id picture_view
 id pin
 id position
 id postLayout
@@ -3515,6 +3522,7 @@ id uniform
 id unlabeled
 id up
 id useLogo
+id video_view
 id view_offset_helper
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
@@ -3647,6 +3655,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
 layout bridge_layout_main
+layout camera_activity
 layout capacitor_bridge_layout_main
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -4228,6 +4237,7 @@ style Base_v21_Theme_SplashScreen
 style Base_v21_Theme_SplashScreen_Light
 style Base_v27_Theme_SplashScreen
 style Base_v27_Theme_SplashScreen_Light
+style CameraPreviewTheme
 style CardView
 style CardView_Dark
 style CardView_Light

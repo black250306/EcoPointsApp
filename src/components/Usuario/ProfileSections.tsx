@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Switch } from "./ui/switch";
-import { Card } from "./ui/card";
-import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Switch } from "../ui/switch";
+import { Card } from "../ui/card";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import {
     Bell,
     Mail,

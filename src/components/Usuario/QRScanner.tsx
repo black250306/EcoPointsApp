@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { Capacitor } from '@capacitor/core';
-import { Camera } from '@capacitor/camera';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { QrCode, X, CheckCircle2, Camera as CameraIcon, Minus, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera';
+import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
+
 
 const sliderStyles = `
   .zoom-slider::-webkit-slider-thumb {
@@ -50,6 +52,7 @@ interface QRScannerProps {
 }
 
 export function QRScanner({ onScanSuccess }: QRScannerProps) {
+  const isNative = Capacitor.isNativePlatform();
   const [isScanning, setIsScanning] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [earnedPoints, setEarnedPoints] = useState(0);
@@ -60,6 +63,8 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isScannerRunning = useRef(false);
   const videoTrackRef = useRef<MediaStreamTrack | null>(null);
+  const [torchOn, setTorchOn] = useState(false);
+
 
   const token = localStorage.getItem("token");
   const API_BASE = window.location.hostname === 'localhost' ? '/api' : 'https://ecopoints.hvd.lat/api';
@@ -156,36 +161,45 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
     setCameraInfo('');
 
     try {
-      if (Capacitor.isNativePlatform()) {
+      // --- DETECTA APP VS WEB ---
+      const isNative = Capacitor.isNativePlatform();
+
+      if (isNative) {
         const permission = await Camera.requestPermissions({ permissions: ['camera'] });
+
         if (permission.camera !== 'granted') {
-          toast.error("Permiso de cámara denegado.");
+          toast.error("Debes permitir el acceso a la cámara.");
           setPermissionError(true);
           return;
         }
+
+        // ABRIR CÁMARA NATIVA Y MOSTRAR STREAM
+        const photo = await Camera.getPhoto({
+          quality: 80,
+          resultType: CameraResultType.DataUrl,
+          direction: CameraDirection.Rear
+        });
+
+        // Aquí podrías convertir `photo.dataUrl` en un QR (si quieres),
+        // pero mantenemos Html5Qrcode para consistencia.
       }
 
+      // --- ESCÁNER WEB / HTML5+CAMERA2 (ANDROID) ---
       const cameras = await Html5Qrcode.getCameras();
       if (!cameras || cameras.length === 0) throw new Error("No se encontraron cámaras.");
 
-      console.log("Todas las cámaras disponibles:", cameras);
-
-      // MANTENIENDO TU LÓGICA ORIGINAL para cámara trasera
       let selectedCamera = cameras.find(c => {
         const label = c.label.toLowerCase();
-        return label.includes('facing back') ||
+        return (
           label.includes('back') ||
+          label.includes('facing back') ||
           label.includes('rear') ||
-          label.includes('trasera') ||
-          label.includes('0') ||
-          label.includes('1');
+          label.includes('trasera')
+        );
       }) || cameras[0];
 
-      const cameraId = selectedCamera.id;
-      const cameraLabel = selectedCamera.label;
-
-      setCameraInfo(`Cámara: ${cameraLabel}`);
-      console.log("Cámara seleccionada:", cameraLabel);
+      setCameraInfo(`Cámara: ${selectedCamera.label}`);
+      console.log("Cámara seleccionada:", selectedCamera.label);
 
       setTransparentBackground(true);
       setIsScanning(true);
@@ -194,6 +208,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         verbose: false,
         formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE]
       });
+
       scannerRef.current = scanner;
 
       const qrboxFunction = (viewfinderWidth: number, viewfinderHeight: number) => {
@@ -209,49 +224,43 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
         aspectRatio: 1.0,
       };
 
-      if (Capacitor.isNativePlatform()) {
+      // En app, fuerza cámara trasera y zoom mínimo
+      if (isNative) {
         config.videoConstraints = {
           width: { ideal: 1280 },
           height: { ideal: 720 },
+          aspectRatio: 1.777,
+          facingMode: { exact: "environment" },
           advanced: [{ zoom: MIN_ZOOM }]
         };
       }
 
-      console.log("Iniciando scanner con configuración:", config);
-
       await scanner.start(
         { facingMode: "environment" },
         config,
-        (decodedText) => {
-          console.log("QR escaneado exitosamente:", decodedText);
-          handleScanSuccess(decodedText);
-        },
+        (decodedText) => handleScanSuccess(decodedText),
         (errorMessage) => {
-          if (!errorMessage.includes("No MultiFormat Readers") &&
-            !errorMessage.includes("NotFoundException")) {
-            console.log("Scanner message:", errorMessage);
+          if (!errorMessage.includes("NotFoundException")) {
+            console.log("Scanner:", errorMessage);
           }
         }
       );
 
       isScannerRunning.current = true;
-      console.log("Scanner iniciado correctamente");
-
-      // Configurar zoom después de iniciar el scanner
       setTimeout(() => {
         setupZoom(scanner);
-      }, 1000);
 
+      }, 800);
     } catch (err: any) {
       console.error("Error al iniciar scanner:", err);
       setIsScanning(false);
       setTransparentBackground(false);
 
-      if (err.name === 'NotAllowedError' || err.message?.includes('permission')) {
-        toast.error("Permiso de cámara denegado. Actívalo en los ajustes.");
+      if (err.name === 'NotAllowedError') {
+        toast.error("Permiso de cámara denegado.");
         setPermissionError(true);
       } else {
-        toast.error(`Error al iniciar cámara: ${err.message || 'Desconocido'}`);
+        toast.error(`Error: ${err.message || 'Cámara no disponible'}`);
       }
     }
   };
@@ -283,6 +292,26 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       applyDigitalZoom(MIN_ZOOM);
     }
   };
+  const toggleFlash = async () => {
+    if (!Capacitor.isNativePlatform()) {
+      toast.info("El flash solo está disponible en la app.");
+      return;
+    }
+
+    try {
+      await CameraPreview.setFlashMode({
+        flashMode: torchOn ? 'off' : 'on'
+
+      });
+
+      setTorchOn(prev => !prev);
+    } catch (error) {
+      console.error(error);
+      toast.error("El flash no es compatible en este dispositivo.");
+    }
+  };
+
+
 
   const handleZoomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newZoom = parseFloat(event.target.value);
@@ -423,6 +452,7 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
 
           {isScanning && (
             <div className="absolute inset-0 pointer-events-none">
+
               {/* Marco de escaneo del segundo código */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-emerald-400 rounded-lg">
                 <motion.div
@@ -487,6 +517,24 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       {isScanning && (
         <Card className="p-4 bg-blue-50 border-blue-200">
           <div className="space-y-3">
+            <div className="flex items-center justify-between mt-3">
+              <span className="text-sm font-medium text-blue-700">
+                Flash
+              </span>
+
+              <Button
+                size="sm"
+                onClick={toggleFlash}
+                variant={torchOn ? "default" : "outline"}
+                className={`flex-shrink-0 ${torchOn
+                    ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                    : "border-blue-300 text-blue-700 hover:bg-blue-100"
+                  }`}
+              >
+                {torchOn ? "Apagar" : "Encender"}
+              </Button>
+            </div>
+
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-blue-700">
                 Control de Zoom

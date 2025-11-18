@@ -7,13 +7,13 @@
         </linearGradient>
     </defs>
 
-    <!-- Cuadrado de fondo (equivalente al 96→1024, dejando margen proporcional) -->
-    <rect x="40" y="40" width="1100" height="1100" fill="url(#emerald)" />
+    <!-- Cuadrado con bordes redondeados -->
+    <rect x="40" y="40" width="944" height="944" rx="80" ry="80" fill="url(#emerald)" />
 
-    <!-- Ícono de hoja (agrandado y centrado proporcionalmente) -->
+    <!-- Ícono de hoja (centrado) -->
     <svg
         x="256" y="256"
-        width="530" height="530"
+        width="550" height="550"
         viewBox="0 0 24 24"
         fill="none"
         stroke="white"

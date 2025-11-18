@@ -1746,6 +1746,7 @@
     <item name="action_bar_spinner" type="id"/>
     <item name="action_menu_divider" type="id"/>
     <item name="action_menu_presenter" type="id"/>
+    <item name="camera_container" type="id"/>
     <item name="fragment_container_view_tag" type="id"/>
     <item name="ghost_view" type="id"/>
     <item name="ghost_view_holder" type="id"/>
@@ -5522,6 +5523,12 @@
     </style>
     <style name="Base.v21.Theme.SplashScreen.Light" parent="android:Theme.DeviceDefault.Light.NoActionBar">
     </style>
+    <style name="CameraPreviewTheme" parent="android:Theme.Light">
+    <item name="android:windowIsFloating">true</item>  
+    <item name="android:windowCloseOnTouchOutside">false</item>  
+    <item name="android:colorBackgroundCacheHint">@null</item>  
+    <item name="android:backgroundDimEnabled">false</item>  
+  </style>
     <style name="CardView" parent="Base.CardView">
     </style>
     <style name="CardView.Dark">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Card } from './ui/card';
-import { Button } from './ui/button';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
 import { ArrowUpRight, Gift, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 
