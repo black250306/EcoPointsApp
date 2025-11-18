@@ -8,7 +8,7 @@ import { Profile } from './components/Usuario/Profile';
 import { Rewards, Reward } from './components/Usuario/Rewards';
 import { BottomNav } from './components/Usuario/BottomNav';
 import { Toaster } from './components/ui/sonner';
-import Login from './components/Login';
+import Login from './components/Usuario/Login';
 import PushNotificationsHandler from './components/PushNotificationsHandler';
 
 export default function App() {

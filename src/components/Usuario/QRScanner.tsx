@@ -5,9 +5,10 @@ import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { QrCode, X, CheckCircle2, Camera as CameraIcon, Minus, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'sonner';
+
 import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera';
 import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
+import { toast } from 'sonner';
 
 
 const sliderStyles = `
@@ -34,7 +35,7 @@ const sliderStyles = `
   }
 
   .zoom-slider::-webkit-slider-track {
-    background: #4b5563;
+    background: #bec0c3ff;
     height: 8px;
     border-radius: 4px;
   }
