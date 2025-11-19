@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.3.2" type="incidents">
+
+    <incident
+        id="MonochromeLauncherIcon"
+        severity="warning"
+        message="The application adaptive icon is missing a monochrome tag">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-anydpi-v26/ic_launcher.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="9"
+            endColumn="17"
+            endOffset="380"/>
+    </incident>
+
+    <incident
+        id="MonochromeLauncherIcon"
+        severity="warning"
+        message="The application adaptive roundIcon is missing a monochrome tag">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-anydpi-v26/ic_launcher_round.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="9"
+            endColumn="17"
+            endOffset="380"/>
+    </incident>
+
+    <incident
+        id="IconLocation"
+        severity="warning"
+        message="Found bitmap drawable `res/drawable/splash.png` in densityless folder">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/splash.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icon used as round icon did not have a circular shape">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-ldpi/ic_launcher_round.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icon used as round icon did not have a circular shape">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-mdpi/ic_launcher_round.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icon used as round icon did not have a circular shape">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-xxhdpi/ic_launcher_round.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icon used as round icon did not have a circular shape">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-xxxhdpi/ic_launcher_round.png"/>
+    </incident>
+
+    <incident
+        id="IconDipSize"
+        severity="warning"
+        message="The image `splash.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-land-hdpi/splash.png: 533x320 dp (800x480 px), drawable-land-ldpi/splash.png: 427x320 dp (320x240 px), drawable-land-mdpi/splash.png: 480x320 dp (480x320 px), drawable-land-xhdpi/splash.png: 640x360 dp (1280x720 px), drawable-land-xxhdpi/splash.png: 533x320 dp (1600x960 px), drawable-land-xxxhdpi/splash.png: 480x320 dp (1920x1280 px)">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-ldpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-xxxhdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-mdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-xxhdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-hdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-xhdpi/splash.png"/>
+    </incident>
+
+    <incident
+        id="IconDipSize"
+        severity="warning"
+        message="The image `splash.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-land-night-hdpi/splash.png: 533x320 dp (800x480 px), drawable-land-night-ldpi/splash.png: 427x320 dp (320x240 px), drawable-land-night-mdpi/splash.png: 480x320 dp (480x320 px), drawable-land-night-xhdpi/splash.png: 640x360 dp (1280x720 px), drawable-land-night-xxhdpi/splash.png: 533x320 dp (1600x960 px), drawable-land-night-xxxhdpi/splash.png: 480x320 dp (1920x1280 px)">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-ldpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-xxxhdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-mdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-xxhdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-hdpi/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-xhdpi/splash.png"/>
+    </incident>
+
+    <incident
+        id="IconDuplicatesConfig"
+        severity="warning"
+        message="The `splash.png` icon has identical contents in the following configuration folders: drawable-land-night-ldpi, drawable-night">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-night/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-land-night-ldpi/splash.png"/>
+    </incident>
+
+    <incident
+        id="IconDuplicatesConfig"
+        severity="warning"
+        message="The `splash.png` icon has identical contents in the following configuration folders: drawable-port-mdpi, drawable">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/splash.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-port-mdpi/splash.png"/>
+    </incident>
+
+</incidents>

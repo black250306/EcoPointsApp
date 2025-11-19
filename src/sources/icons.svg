@@ -8,7 +8,7 @@
     </defs>
 
     <!-- Cuadrado con bordes redondeados -->
-    <rect x="40" y="40" width="944" height="944" rx="80" ry="80" fill="url(#emerald)" />
+    <rect x="40" y="40" width="944" height="944" rx="300" ry="300" fill="url(#emerald)" />
 
     <!-- Ícono de hoja (centrado) -->
     <svg

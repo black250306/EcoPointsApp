@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.3.2" type="partial_results">
+    <map id="UnusedResources">
+        <location id="R.style.AppTheme_NoActionBar"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/styles.xml"
+            line="12"
+            column="12"
+            startOffset="431"
+            endLine="12"
+            endColumn="39"
+            endOffset="458"/>
+        <location id="R.string.custom_url_scheme"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="6"
+            column="13"
+            startOffset="240"
+            endLine="6"
+            endColumn="37"
+            endOffset="264"/>
+        <location id="R.drawable.ic_launcher_foreground"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-v24/ic_launcher_foreground.xml"
+            line="1"
+            column="1"
+            startOffset="0"
+            endLine="34"
+            endColumn="10"
+            endOffset="1912"/>
+        <location id="R.string.package_name"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="5"
+            column="13"
+            startOffset="180"
+            endLine="5"
+            endColumn="32"
+            endOffset="199"/>
+        <location id="R.xml.config"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/xml/config.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="6"
+            endColumn="10"
+            endOffset="185"/>
+        <entry
+            name="model"
+            string="color[ic_launcher_background(D),colorPrimary(R),colorPrimaryDark(R),colorAccent(R)],drawable[ic_launcher_background(D),splash(U),ic_launcher_foreground(D),ic_launcher_foreground_1(E)],layout[activity_main(D)],mipmap[ic_launcher(U),ic_launcher_round(U),ic_launcher_background(U),ic_launcher_foreground(U)],string[app_name(U),title_activity_main(U),package_name(D),custom_url_scheme(D)],style[AppTheme(U),AppTheme_NoActionBarLaunch(U),Theme_AppCompat_Light_DarkActionBar(R),AppTheme_NoActionBar(D),Theme_AppCompat_DayNight_NoActionBar(E),Theme_SplashScreen(R)],xml[file_paths(U),config(D)];6^7,9^b^c,a^b^c,11^13^1^2^3,12^16^5,14^15;;;"/>
+        <location id="R.drawable.ic_launcher_background"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/ic_launcher_background.xml"
+            line="2"
+            column="1"
+            startOffset="40"
+            endLine="170"
+            endColumn="10"
+            endOffset="5774"/>
+        <location id="R.layout.activity_main"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/layout/activity_main.xml"
+            line="2"
+            column="1"
+            startOffset="40"
+            endLine="12"
+            endColumn="55"
+            endOffset="545"/>
+        <location id="R.color.ic_launcher_background"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/ic_launcher_background.xml"
+            line="3"
+            column="12"
+            startOffset="64"
+            endLine="3"
+            endColumn="41"
+            endOffset="93"/>
+    </map>
+    <map id="NotificationPermission">
+        <entry
+            name="className"
+            string="com/capacitorjs/plugins/localnotifications/TimedNotificationPublisher"/>
+        <location id="class"
+            file="$HOME/OneDrive/Escritorio/react-prueba/Ecopoints QR Scanner App/node_modules/@capacitor/local-notifications/android/build/.transforms/9bf1cde8ea944ac8d0c1cd354f2398b7/transformed/out/jars/classes.jar"/>
+    </map>
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.ecoPoints.App.MainActivity"
+                    boolean="true"/>
+            </map>
+    </map>
+
+</incidents>

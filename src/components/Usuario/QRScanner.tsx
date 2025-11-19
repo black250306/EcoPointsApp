@@ -5,7 +5,6 @@ import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { QrCode, X, CheckCircle2, Camera as CameraIcon, Minus, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera';
 import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 import { toast } from 'sonner';
@@ -166,12 +165,14 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
       const isNative = Capacitor.isNativePlatform();
 
       if (isNative) {
-        const permission = await Camera.requestPermissions({ permissions: ['camera'] });
-
+        const permission = await Camera.checkPermissions();
         if (permission.camera !== 'granted') {
-          toast.error("Debes permitir el acceso a la cámara.");
-          setPermissionError(true);
-          return;
+          const newPerm = await Camera.requestPermissions();
+          if (newPerm.camera !== 'granted') {
+            toast.error("Debes permitir el acceso a la cámara.");
+            setPermissionError(true);
+            return;
+          }
         }
 
         // ABRIR CÁMARA NATIVA Y MOSTRAR STREAM
@@ -528,8 +529,8 @@ export function QRScanner({ onScanSuccess }: QRScannerProps) {
                 onClick={toggleFlash}
                 variant={torchOn ? "default" : "outline"}
                 className={`flex-shrink-0 ${torchOn
-                    ? "bg-yellow-400 text-black hover:bg-yellow-500"
-                    : "border-blue-300 text-blue-700 hover:bg-blue-100"
+                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                  : "border-blue-300 text-blue-700 hover:bg-blue-100"
                   }`}
               >
                 {torchOn ? "Apagar" : "Encender"}

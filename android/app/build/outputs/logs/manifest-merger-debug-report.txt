@@ -1,20 +1,20 @@
 -- Merging decision tree log ---
 provider#androidx.core.content.FileProvider
-INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:26:9-34:20
+INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:48:9-54:20
 	android:grantUriPermissions
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:30:13-47
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:52:13-47
 	android:authorities
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:28:13-64
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:50:13-64
 	android:exported
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:29:13-37
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:51:13-37
 	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:27:13-62
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:49:13-62
 manifest
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:2:1-52:12
-INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:2:1-52:12
-INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:2:1-52:12
-INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:2:1-52:12
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:1-56:12
+INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:1-56:12
+INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:1-56:12
+INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:1-56:12
 MERGED from [:capacitor-camera] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\camera\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-13:12
 MERGED from [:capacitor-community-camera-preview] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor-community\camera-preview\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:capacitor-device] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\device\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
@@ -97,16 +97,83 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\aries\.gradle\cache
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\aries\.gradle\caches\transforms-3\a7417bc8df5d119965f8b49434c676d9\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
 MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\aries\.gradle\caches\transforms-3\0ecc8f373b6bf2c8d9f3d5a15391bb86\transformed\framework-10.1.1\AndroidManifest.xml:20:1-27:12
 	package
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:70-97
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:3:5-67
+MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\546ee2fbf92823291d65236d7dac7787\transformed\firebase-installations-17.2.0\AndroidManifest.xml:8:5-67
+MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\546ee2fbf92823291d65236d7dac7787\transformed\firebase-installations-17.2.0\AndroidManifest.xml:8:5-67
+MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\cd5571f4832023fd527d7ad902bad7d3\transformed\play-services-cloud-messaging-17.2.0\AndroidManifest.xml:8:5-67
+MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\cd5571f4832023fd527d7ad902bad7d3\transformed\play-services-cloud-messaging-17.2.0\AndroidManifest.xml:8:5-67
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\aries\.gradle\caches\transforms-3\42f8301f3491bac635a7deae5b5fbee6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\aries\.gradle\caches\transforms-3\42f8301f3491bac635a7deae5b5fbee6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:3:22-64
+uses-permission#android.permission.CAMERA
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:6:5-65
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:6:22-62
+uses-permission#android.permission.FLASHLIGHT
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:7:5-69
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:7:22-66
+uses-feature#android.hardware.camera
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:8:5-85
+	android:required
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:8:58-82
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:8:19-57
+uses-feature#android.hardware.camera.autofocus
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:9:5-95
+	android:required
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:9:68-92
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:9:19-67
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:12:5-79
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:12:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:13:5-81
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:13:22-78
+uses-feature#android.hardware.location.gps
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:14:5-66
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:14:19-63
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:17:5-77
+MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-77
+MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-77
+MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\aries\.gradle\caches\transforms-3\e9a0076c4bf7ce6d0cb7da6673979c27\transformed\firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
+MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\aries\.gradle\caches\transforms-3\e9a0076c4bf7ce6d0cb7da6673979c27\transformed\firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:17:22-74
+uses-permission#android.permission.USE_FULL_SCREEN_INTENT
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:20:5-81
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:20:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:23:5-107
+	android:maxSdkVersion
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:23:78-104
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:23:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:24:5-108
+	android:maxSdkVersion
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:24:79-105
+	android:name
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:24:22-78
 application
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:3:5-35:19
-INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:3:5-35:19
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:26:5-55:19
+INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:26:5-55:19
 MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:5-24:19
 MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:5-24:19
 MERGED from [:capacitor-push-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\push-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-15:19
@@ -159,90 +226,52 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\aries\.gradle\caches\transforms-3\dc512f6d10f8618813ef2693cc4ca5ca\transformed\transport-runtime-3.1.9\AndroidManifest.xml:25:5-39:19
 	android:extractNativeLibs
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
+	android:requestLegacyExternalStorage
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:32:9-52
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\aries\.gradle\caches\transforms-3\1b2608bf403f9c07e91c09f0a91bc18a\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:8:9-35
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:31:9-35
 	android:label
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:6:9-41
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:29:9-41
 	android:roundIcon
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:7:9-54
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:30:9-54
 	android:icon
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:5:9-43
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:28:9-43
 	android:allowBackup
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:4:9-35
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:27:9-35
 	android:theme
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:9:9-40
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:33:9-40
 activity#com.ecoPoints.App.MainActivity
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:11:9-24:20
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:34:9-45:20
 	android:label
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:14:13-56
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:37:13-56
 	android:launchMode
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:16:13-44
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:39:13-44
 	android:exported
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:17:13-36
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:40:13-36
 	android:configChanges
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:12:13-129
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:35:13-129
 	android:theme
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:15:13-62
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:38:13-62
 	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:13:13-58
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:36:13-58
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:19:13-22:29
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:41:13-44:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:20:17-69
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:42:17-69
 	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:20:25-66
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:42:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:21:17-77
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:43:17-77
 	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:21:27-74
-uses-permission#android.permission.INTERNET
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:39:5-67
-MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\546ee2fbf92823291d65236d7dac7787\transformed\firebase-installations-17.2.0\AndroidManifest.xml:8:5-67
-MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\546ee2fbf92823291d65236d7dac7787\transformed\firebase-installations-17.2.0\AndroidManifest.xml:8:5-67
-MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\cd5571f4832023fd527d7ad902bad7d3\transformed\play-services-cloud-messaging-17.2.0\AndroidManifest.xml:8:5-67
-MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Users\aries\.gradle\caches\transforms-3\cd5571f4832023fd527d7ad902bad7d3\transformed\play-services-cloud-messaging-17.2.0\AndroidManifest.xml:8:5-67
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\aries\.gradle\caches\transforms-3\42f8301f3491bac635a7deae5b5fbee6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\aries\.gradle\caches\transforms-3\42f8301f3491bac635a7deae5b5fbee6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:39:22-64
-uses-permission#android.permission.CAMERA
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:42:5-65
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:42:22-62
-uses-feature#android.hardware.camera
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:43:5-84
-	android:required
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:43:58-81
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:43:19-57
-uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:45:5-81
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:45:22-78
-uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:46:5-79
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:46:22-76
-uses-feature#android.hardware.location.gps
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:47:5-66
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:47:19-63
-uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:50:5-76
-MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-77
-MERGED from [:capacitor-local-notifications] C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\node_modules\@capacitor\local-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-77
-MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\aries\.gradle\caches\transforms-3\e9a0076c4bf7ce6d0cb7da6673979c27\transformed\firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
-MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\aries\.gradle\caches\transforms-3\e9a0076c4bf7ce6d0cb7da6673979c27\transformed\firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
-	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:50:22-74
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:43:27-74
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:31:13-33:64
+ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:53:13-112
 	android:resource
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:33:17-51
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:53:75-109
 	android:name
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:32:17-67
+		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:53:24-74
 uses-sdk
 INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
