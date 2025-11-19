@@ -5,7 +5,7 @@ import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { Gift, Leaf, Sparkles, Tag, CheckCircle2, Package } from 'lucide-react';
-import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { ImageWithFallback } from '../Img/ImageWithFallback';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 

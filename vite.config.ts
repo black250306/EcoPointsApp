@@ -55,7 +55,7 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
-    // 🔥 CONFIGURACIÓN DEL PROXY PARA CORS
+//Proxy permisos croos
     proxy: {
       '/api': {
         target: 'https://ecopoints.hvd.lat',

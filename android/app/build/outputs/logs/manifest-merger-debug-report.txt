@@ -97,7 +97,6 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\aries\.gradle\cache
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\aries\.gradle\caches\transforms-3\b3076fdbb1df20f80be7b995f21061a1\transformed\annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
 MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\aries\.gradle\caches\transforms-3\ebd16462d19162f21d11a2c09d191903\transformed\framework-10.1.1\AndroidManifest.xml:20:1-27:12
 	package
-		ADDED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml:1:70-97
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\aries\OneDrive\Escritorio\react-prueba\Ecopoints QR Scanner App\android\app\src\main\AndroidManifest.xml

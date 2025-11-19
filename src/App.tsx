@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Home } from './components/Usuario/Home';
 import { QRScanner } from './components/Usuario/QRScanner';
@@ -9,7 +8,7 @@ import { Rewards, Reward } from './components/Usuario/Rewards';
 import { BottomNav } from './components/Usuario/BottomNav';
 import { Toaster } from './components/ui/sonner';
 import Login from './components/Usuario/Login';
-import PushNotificationsHandler from './components/PushNotificationsHandler';
+import PushNotificationsHandler from './components/Notificaciones/PushNotificationsHandler';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,11 +24,11 @@ export default function App() {
         await StatusBar.setOverlaysWebView({ overlay: false });
         
         if (theme === 'light') {
-          // Modo claro: texto oscuro sobre fondo claro
+          
           await StatusBar.setStyle({ style: Style.Dark });
           await StatusBar.setBackgroundColor({ color: '#a4a4a4ff' });
         } else {
-          // Modo oscuro: texto claro sobre fondo oscuro  
+          
           await StatusBar.setStyle({ style: Style.Light });
           await StatusBar.setBackgroundColor({ color: '#121f2f' });
         }
@@ -140,70 +139,18 @@ export default function App() {
 
   return (
     <>
-      {/* Estilos optimizados para safe areas */}
-      <style>
-        {`
-          /* Reset seguro para altura completa */
-          html, body, #root {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-          }
-          
-          /* Contenedor principal que respeta safe areas */
-          .app-main-container {
-            height: 100vh;
-            height: 100dvh; /* Altura dinámica para móviles */
-            
-            flex-direction: column;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
-          }
-          
-          /* Contenido scrollable que ocupa el espacio disponible */
-          .scrollable-container {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
-          }
-          
-          .scrollable-container::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
-          }
-          
-          /* Navigation bar fija que respeta safe area inferior */
-          .nav-container {
-            padding-bottom: env(safe-area-inset-bottom);
-            background: inherit;
-          }
-          
-          /* Asegurar que el contenido no se esconda bajo notch */
-          .safe-top {
-            padding-top: env(safe-area-inset-top);
-          }
-          
-          .safe-bottom {
-            padding-bottom: env(safe-area-inset-bottom);
-          }
-        `}
-      </style>
+      
 
       <div className="app-main-container bg-gradient-to-b from-emerald-50 dark:from-gray-900 dark:to-gray-800">
         <PushNotificationsHandler />
 
         <div className="max-w-md mx-auto h-full flex flex-col shadow-xl dark:shadow-gray-900 bg-white dark:bg-gray-900 relative">
-          {/* Contenido principal CON scroll y safe area superior */}
+          
           <div className="scrollable-container safe-top">
             {renderView()}
           </div>
 
-          {/* Navigation bar fija con safe area inferior */}
+
           <div className="nav-container bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
             <BottomNav currentView={currentView} onNavigate={setCurrentView} />
           </div>
