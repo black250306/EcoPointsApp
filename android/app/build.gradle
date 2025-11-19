@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.ecoPoints.App"
+    namespace "com.ecopoints.app"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.ecoPoints.App"
+        applicationId "com.ecopoints.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -15,7 +15,6 @@ android {
         }
     }
     
-    // AGREGAR ESTA SECCIÓN PARA CONFIGURAR JAVA
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
@@ -46,12 +45,10 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
     
-    // AGREGAR DEPENDENCIAS ADICIONALES QUE FALTAN
     implementation "androidx.activity:activity:$androidxActivityVersion"
     implementation "androidx.fragment:fragment:$androidxFragmentVersion"
     implementation "androidx.webkit:webkit:$androidxWebkitVersion"
 
-    // Dependencia del plugin de la cámara añadida
     implementation project(':capacitor-camera')
 }
 

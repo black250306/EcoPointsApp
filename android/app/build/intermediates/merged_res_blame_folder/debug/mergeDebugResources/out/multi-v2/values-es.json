@@ -4,7 +4,24 @@
             "outputFile": "com.ecoPoints.App.app-mergeDebugResources-40:/values-es/values-es.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\23adb4db06e7a279aacc3af2e5b12186\\transformed\\material-1.12.0\\res\\values-es\\values-es.xml",
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\6adb482fb3b9ee0b8f50aa935938b787\\transformed\\core-1.13.1\\res\\values-es\\values-es.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,154,256,356,454,561,667,787",
+                        "endColumns": "98,101,99,97,106,105,119,100",
+                        "endOffsets": "149,251,351,449,556,662,782,883"
+                    },
+                    "to": {
+                        "startLines": "38,39,40,41,42,43,44,134",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "3503,3602,3704,3804,3902,4009,4115,12392",
+                        "endColumns": "98,101,99,97,106,105,119,100",
+                        "endOffsets": "3597,3699,3799,3897,4004,4110,4230,12488"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\77d5b8d455656e067b136133dfd1a7b1\\transformed\\material-1.12.0\\res\\values-es\\values-es.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -23,24 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\1b2608bf403f9c07e91c09f0a91bc18a\\transformed\\core-1.13.1\\res\\values-es\\values-es.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,154,256,356,454,561,667,787",
-                        "endColumns": "98,101,99,97,106,105,119,100",
-                        "endOffsets": "149,251,351,449,556,662,782,883"
-                    },
-                    "to": {
-                        "startLines": "38,39,40,41,42,43,44,134",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "3503,3602,3704,3804,3902,4009,4115,12392",
-                        "endColumns": "98,101,99,97,106,105,119,100",
-                        "endOffsets": "3597,3699,3799,3897,4004,4110,4230,12488"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\8b192a47a025a86437a1614aeab4c446\\transformed\\play-services-base-18.5.0\\res\\values-es\\values.xml",
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\dc724d71b451cf29dc16ef6965a003bd\\transformed\\play-services-base-18.5.0\\res\\values-es\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -57,7 +57,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\ff7913b0f8c8b4cbea8f8f8dd68ef256\\transformed\\appcompat-1.6.1\\res\\values-es\\values-es.xml",
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\92b8ed11d29dd34f71ab9123b2caa471\\transformed\\appcompat-1.6.1\\res\\values-es\\values-es.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -74,7 +74,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\199ecaccbd229a08b5d12a8cf819c497\\transformed\\play-services-basement-18.4.0\\res\\values-es\\values.xml",
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\2eedfd2ef5203fb34cd79944fc430fef\\transformed\\play-services-basement-18.4.0\\res\\values-es\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

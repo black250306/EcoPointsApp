@@ -4,7 +4,7 @@
             "outputFile": "com.ecoPoints.App.app-mergeDebugResources-40:/values-v27/values-v27.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\b80fdbe548420f987178147b7748c6a6\\transformed\\core-splashscreen-1.0.1\\res\\values-v27\\values-v27.xml",
+                    "source": "C:\\Users\\aries\\.gradle\\caches\\transforms-3\\8baf0d372a38ae317d6d320c6a311c74\\transformed\\core-splashscreen-1.0.1\\res\\values-v27\\values-v27.xml",
                     "from": {
                         "startLines": "2,3,4,7",
                         "startColumns": "4,4,4,4",
