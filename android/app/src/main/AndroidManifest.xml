@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ecoPoints.App">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- ===== PERMISOS ===== -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -33,7 +33,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:name="com.ecoPoints.App.MainActivity"
+            android:name="com.ecopoints.app.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"
