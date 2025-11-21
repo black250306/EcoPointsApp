@@ -31,14 +31,11 @@ const PushNotificationsHandler = () => {
                     return;
                 }
 
-                // 2. Si el permiso es concedido, registra el dispositivo
                 await PushNotifications.register();
-
-                // --- LISTOS PARA RECIBIR NOTIFICACIONES ---
 
                 PushNotifications.addListener('registration', (token: Token) => {
                     console.info('Device registered for notifications. TOKEN:', token.value);
-                    // Here you would send this token to your backend server.
+    
                 });
 
                 PushNotifications.addListener('registrationError', (err: any) => {
@@ -72,7 +69,7 @@ const PushNotificationsHandler = () => {
 
     }, []);
 
-    return null; // This component does not render any UI.
+    return null;
 };
 
 export default PushNotificationsHandler;
